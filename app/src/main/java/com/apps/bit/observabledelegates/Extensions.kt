@@ -19,5 +19,5 @@ inline fun <R> KProperty0<*>.getNonAccessible(action: KProperty0<*>.() -> R): R 
  * or Exception otherwise
  */
 @Suppress("UNCHECKED_CAST")
-val <R : Any> KProperty0<R>.observable
-    get() = getNonAccessible(KProperty0<*>::getDelegate) as ObservableValue<R>
+val <reified R : Any> KProperty0<R>.observable
+    inline get() = getNonAccessible { getDelegate() } as ObservableValue<R>
