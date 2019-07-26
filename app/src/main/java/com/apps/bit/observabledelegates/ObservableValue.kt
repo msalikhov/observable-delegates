@@ -5,7 +5,7 @@ import kotlin.reflect.KProperty
 
 class ObservableValue<T : Any> : ReadWriteProperty<Any, T> {
 
-    private val observers = ArrayList<(T) -> Unit>(2)
+    private val observers = mutableListOf<(T) -> Unit>()
 
     private lateinit var value: T
 
