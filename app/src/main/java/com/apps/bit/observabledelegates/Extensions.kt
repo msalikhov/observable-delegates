@@ -23,12 +23,12 @@ inline fun <R, T, K : KCallable<T>> K.withAccess(action: (K) -> R) = if (isAcces
     result
 }
 
-val <R : Any> KProperty0<R>.rxObservable
-    get(): Observable<R> = getTypedDelegate<RxObservableDelegate<R>>()
+val <R : Any> KProperty0<R>.rxObservable: Observable<R>
+    get() = getTypedDelegate<RxObservableDelegate<R>>()
 
-val <R : Any> KProperty0<R>.ldObservable
-    get(): LiveData<R> = getTypedDelegate<LiveDataObservableDelegate<R>>()
+val <R : Any> KProperty0<R>.ldObservable: LiveData<R>
+    get() = getTypedDelegate<LiveDataObservableDelegate<R>>()
 
-inline fun <reified T> KProperty0<*>.getTypedDelegate() = withAccess { it.getDelegate() } as T
+fun <T> KProperty0<*>.getTypedDelegate() = withAccess { it.getDelegate() } as T
 
 inline fun <T> LiveData<T>.observeChanges(owner: LifecycleOwner, crossinline observer: (T) -> Unit) = observe(owner, Observer { observer(it) })
