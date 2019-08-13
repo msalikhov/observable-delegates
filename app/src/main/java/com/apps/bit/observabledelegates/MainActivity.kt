@@ -1,36 +1,35 @@
 package com.apps.bit.observabledelegates
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val loggingObserver: (String) -> Unit = {
-        Log.d("---", "observable value changed: $it")
-    }
-
-    private val textViewObserver: (String) -> Unit = {
-        textview.text = it
-    }
+    private lateinit var disposable: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        TimeUpdater::timeNanos.ldObservable.observeChanges(this, this::updateTimeNanos)
     }
 
     override fun onStart() {
         super.onStart()
-
-        //initial value will be set immediately
-        SomeObject::someValue.observable.addObserver(textViewObserver)
-        SomeObject::someValue.observable.addObserver(loggingObserver)
+        disposable = TimeUpdater::timeMillis.rxObservable.subscribe(this::updateTimeMillis)
     }
 
     override fun onStop() {
-        SomeObject::someValue.observable.removeObserver(textViewObserver)
-        SomeObject::someValue.observable.removeObserver(loggingObserver)
+        disposable.dispose()
         super.onStop()
     }
+
+    private fun updateTimeMillis(value: Long) = updateTime(time_millis, value)
+
+    private fun updateTimeNanos(value: Long) = updateTime(time_nanos, value)
+
+    private fun updateTime(tv: TextView, value: Long) = tv.setText(value.toString())
 }
