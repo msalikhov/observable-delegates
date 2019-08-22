@@ -11,10 +11,7 @@ import kotlin.reflect.jvm.isAccessible
 
 fun Any?.trace() = Log.d("---", toString())
 
-/**
- * Allows to get something from property, which are not accessible
- */
-inline fun <R, T, K : KCallable<T>> K.withAccess(action: (K) -> R) = if (isAccessible) {
+inline fun <R, T, K : KCallable<T>> K.withAccess(action: (K) -> R): R = if (isAccessible) {
     action(this)
 } else {
     isAccessible = true
@@ -23,12 +20,8 @@ inline fun <R, T, K : KCallable<T>> K.withAccess(action: (K) -> R) = if (isAcces
     result
 }
 
-val <R : Any> KProperty0<R>.rxObservable: Observable<R>
-    get() = getTypedDelegate<RxObservableDelegate<R>>()
+val <R : Any> KProperty0<R>.rxObservable get() = withAccess { it.getDelegate() } as Observable<R>
 
-val <R : Any> KProperty0<R>.ldObservable: LiveData<R>
-    get() = getTypedDelegate<LiveDataObservableDelegate<R>>()
-
-fun <T> KProperty0<*>.getTypedDelegate() = withAccess { it.getDelegate() } as T
+val <R : Any> KProperty0<R>.ldObservable get() = withAccess { it.getDelegate() } as LiveData<R>
 
 inline fun <T> LiveData<T>.observeChanges(owner: LifecycleOwner, crossinline observer: (T) -> Unit) = observe(owner, Observer { observer(it) })
