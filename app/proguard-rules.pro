@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class kotlin.Metadata { *; }
+-keep class com.apps.bit.observabledelegates.TimeUpdater {*;}
+-keep class kotlin.reflect.jvm.internal.impl.load.java.FieldOverridabilityCondition
+-keep class kotlin.reflect.jvm.internal.impl.load.java.ErasedOverridabilityCondition
+-keep class kotlin.reflect.jvm.internal.impl.load.java.JavaIncompatibilityRulesOverridabilityCondition
