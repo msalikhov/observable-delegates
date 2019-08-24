@@ -20,8 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keepclasseswithmembernames class com.apps.bit.observabledelegates.** {*;}
 -keep class kotlin.Metadata { *; }
--keep class com.apps.bit.observabledelegates.TimeUpdater {*;}
 -keep class kotlin.reflect.jvm.internal.impl.load.java.FieldOverridabilityCondition
 -keep class kotlin.reflect.jvm.internal.impl.load.java.ErasedOverridabilityCondition
 -keep class kotlin.reflect.jvm.internal.impl.load.java.JavaIncompatibilityRulesOverridabilityCondition
